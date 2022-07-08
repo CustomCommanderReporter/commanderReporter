@@ -9,9 +9,24 @@ class AddPlayerToEvent(BaseModel):
     Deck_link: Union[str, None]
 
 
+class DefaultPlayerData():
+    Points: int
+    Sub_points: int
+    Has_autowin: int
+    Hidden_points: float
+    Status: bool
+    Player_id: str
+    Commander: str
+
+
 class PlayerOnTable(BaseModel):
     name: str
     id: str
+
+
+class UpdatePlayerResponse:
+    status: bool
+    player_data: PlayerOnTable
 
 
 class Table(BaseModel):
@@ -61,7 +76,3 @@ class GeneralEventInfo(BaseModel):
     Players: List[PlayerInfo]
     Rounds: Union[List[Round], None]
     Status: str
-
-
-class FullEventInfo(BaseModel):
-    pass

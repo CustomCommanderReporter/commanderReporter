@@ -13,13 +13,14 @@ class EventService:
     def __init__(self, session=Depends(DataBaseManipulation)):
         self.session = session
 
+    # TODO: update and parse time for better output
     def get_all_events(self) -> List[dict]:
         return self.session.get_all_events()
 
     def get_event(self, event_id: str) -> dict:
         event = self.session.find_event(event_id)
         if not event:
-            raise HTTPException(status_code=404, detail='No event with chosen ID')
+            raise HTTPException(status_code=404, detail='No event with ID: {event_id}')
         return event
 
     def create_event(self, event_data: CreateEvent) -> dict:
