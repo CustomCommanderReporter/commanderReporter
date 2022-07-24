@@ -1,20 +1,18 @@
 from typing import List
-from uuid import uuid4
-import uuid
 from datetime import datetime
 
 from databaseSvc.databaseManipulation import DataBaseManipulation
 from fastapi import HTTPException, Depends
 
-from ..models.events import CreateEvent
+from eventSvc.models.events import CreateEvent, EventBase
+from eventSvc.service.gen_default import GenDefaultEventData
 
 
 class EventService:
     def __init__(self, session=Depends(DataBaseManipulation)):
         self.session = session
 
-    # TODO: update and parse time for better output
-    def get_all_events(self) -> List[dict]:
+    def get_all_events(self) -> List[EventBase]:
         return self.session.get_all_events()
 
     def get_event(self, event_id: str) -> dict:
@@ -23,13 +21,8 @@ class EventService:
             raise HTTPException(status_code=404, detail='No event with ID: {event_id}')
         return event
 
-    def create_event(self, event_data: CreateEvent) -> dict:
-        actual_event_data = event_data.dict()
-        actual_event_data['Status'] = 'created'
-        actual_event_data['Event_id'] = str(uuid4())
-        actual_event_data['Rounds'] = []
-        actual_event_data['Event_Date'] = str(datetime.strptime(actual_event_data['Event_Date'], '%d %B, %Y'))
-        self.session.insert_event(actual_event_data)
+    def create_event(self, event_data: CreateEvent) -> EventBase:
+        actual_event_data = self.session.insert_event(GenDefaultEventData(event_data))
         return actual_event_data
 
     def update_event(self, event_id: str, event_data: CreateEvent) -> dict:
