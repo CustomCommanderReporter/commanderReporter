@@ -111,6 +111,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+/src/tempASVC/avenv
+/testenv
 
 # Spyder project settings
 .spyderproject
