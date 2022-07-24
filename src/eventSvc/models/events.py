@@ -8,8 +8,11 @@ class EventBase(BaseModel):
     Event_Date: str
     Event_id: str
 
-    class Config:
-        orm_mode = True
+
+class EventFullData(EventBase):
+    Status: str
+    Players: List
+    Rounds: List
 
 
 class CreateEvent(BaseModel):

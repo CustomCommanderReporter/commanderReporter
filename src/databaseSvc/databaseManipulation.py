@@ -64,13 +64,9 @@ class DataBaseManipulation:
 
     @Logger()
     def update_player(self, event_id: str, player_id: str, player_data: dict) -> bool:
-        print('*'*100)
-        print(player_data)
         update_cursor = self.session.update_one({'Event_id': str(event_id)},
                                                 {'$set': {'Players.$[element]': player_data}},
                                                 array_filters=[{'element.Player_id': {'$eq': player_id}}])
-        print('*'*100)
-        print(update_cursor.modified_count)
         return update_cursor.modified_count == 1
 
     @Logger()
